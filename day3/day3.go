@@ -54,7 +54,7 @@ func getBatteriesTotalPart2(line string) int {
 		offset--
 	}
 
-	return sumPart2Batteries(batteries)
+	return converToJoltage(batteries)
 }
 
 func getHighestValue(line string, index int) (int, int) {
@@ -74,14 +74,12 @@ func getHighestValue(line string, index int) (int, int) {
 	return highest, highestIndex
 }
 
-func sumPart2Batteries(b [12]int) int {
-	multiplier := 100000000000
-	total := 0
+func convertToJoltage(b [12]int) int {
+	var joltage int
 
-	for i := range 12 {
-		total += b[i] * multiplier
-		multiplier /= 10
+	for _, val := range b {
+		joltage = joltage*10 + val
 	}
 
-	return total
+	return joltage
 }
