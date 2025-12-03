@@ -54,7 +54,7 @@ func getBatteriesTotalPart2(line string) int {
 		offset--
 	}
 
-	return converToJoltage(batteries)
+	return convertToJoltage(batteries)
 }
 
 func getHighestValue(line string, index int) (int, int) {
