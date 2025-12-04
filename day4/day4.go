@@ -8,7 +8,7 @@ import (
 )
 
 const paper = "@"
-const clear = "."
+const clear = '.'
 
 type position struct {
 	row    int
@@ -18,24 +18,45 @@ type position struct {
 func main() {
 
 	var part1Total int
+	var part2Total int
 
 	rows := readFile("input.txt")
 
+	// part 1
 	for row := range rows {
 		for column := 0; column < len(rows[row]); column++ {
-			if checkPaperPart1(row, column, rows) {
+			if checkPaper(row, column, rows) {
 				part1Total++
 			}
 		}
 	}
 
-	fmt.Printf("Part 1 total: %v", part1Total)
+	// part 2
+	hits := []position{}
+	previousTotal := -1
+
+	for previousTotal != part2Total {
+		previousTotal = part2Total
+		for row := range rows {
+			for column := 0; column < len(rows[row]); column++ {
+				if checkPaper(row, column, rows) {
+					part2Total++
+					hits = append(hits, position{row, column})
+				}
+			}
+		}
+		for _, hit := range hits {
+			rows[hit.row] = removePaperFromString(rows[hit.row], hit.column)
+		}
+	}
+
+	fmt.Printf("Part 1 total: %v and Part 2 total: %v", part1Total, part2Total)
 }
 
-func checkPaperPart1(row, column int, rows []string) bool {
+func checkPaper(row, column int, rows []string) bool {
 	symbol := string(rows[row][column])
 
-	if symbol == clear {
+	if symbol != paper {
 		return false
 	}
 
@@ -67,6 +88,12 @@ func checkPaperPart1(row, column int, rows []string) bool {
 	}
 
 	return count < 4
+}
+
+func removePaperFromString(input string, column int) string {
+	b := []byte(input)
+	b[column] = clear
+	return string(b)
 }
 
 func readFile(filename string) []string {
