@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"sort"
 	"strconv"
 	"strings"
 )
@@ -17,7 +18,7 @@ type inclusiveRange struct {
 func MainDay5(filename string) {
 	ranges, inputs := readFile(filename)
 	part1(ranges, inputs)
-
+	part2(ranges)
 }
 
 func part1(ranges []string, inputs []string) {
@@ -30,7 +31,56 @@ func part1(ranges []string, inputs []string) {
 		}
 	}
 
-	fmt.Printf("Count is: %v", count)
+	fmt.Printf("Part 1 count is: %v\n", count)
+}
+
+func part2(ranges []string) {
+	inclusiveRanges := convertToRangesType(ranges)
+	var count int
+
+	sort.Slice(inclusiveRanges, func(i, j int) bool {
+		return inclusiveRanges[i].lower < inclusiveRanges[j].lower
+	})
+
+	combined := combineRanges(inclusiveRanges)
+
+	for _, c := range combined {
+		count += c.upper - c.lower + 1
+	}
+
+	fmt.Printf("Part 2 count is: %v", count)
+
+}
+
+func combineRanges(sortedRanges []inclusiveRange) (combinedRanges []inclusiveRange) {
+	for i := 0; i < len(sortedRanges); i++ {
+		high := sortedRanges[0].upper
+
+		for j := i; j < len(sortedRanges); j++ {
+			low := sortedRanges[i].lower
+
+			if sortedRanges[j].upper > high {
+				high = sortedRanges[j].upper
+			}
+
+			if j+1 >= len(sortedRanges) {
+				// out of bounds
+				combinedRanges = append(combinedRanges, inclusiveRange{low, high})
+				i = j
+				break
+			}
+
+			if high < sortedRanges[j+1].lower {
+				// move onto the next starting range
+				combinedRanges = append(combinedRanges, inclusiveRange{low, high})
+				i = j
+				break
+			}
+
+		}
+	}
+
+	return combinedRanges
 }
 
 func convertToRangesType(ranges []string) []inclusiveRange {
