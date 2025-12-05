@@ -76,7 +76,6 @@ func combineRanges(sortedRanges []inclusiveRange) (combinedRanges []inclusiveRan
 				i = j
 				break
 			}
-
 		}
 	}
 
