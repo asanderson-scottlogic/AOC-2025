@@ -1,4 +1,4 @@
-package main
+package day4
 
 import (
 	"bufio"
@@ -15,12 +15,12 @@ type position struct {
 	column int
 }
 
-func main() {
+func MainDay4(input string) {
 
 	var part1Total int
 	var part2Total int
 
-	rows := readFile("input.txt")
+	rows := readFile(input)
 
 	// part 1
 	for row := range rows {

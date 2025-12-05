@@ -1,4 +1,4 @@
-package main
+package day3
 
 import (
 	"bufio"
@@ -8,11 +8,11 @@ import (
 	"strconv"
 )
 
-func main() {
+func MainDay3(input string) {
 	var part1total = 0
 	var part2total = 0
 
-	file, err := os.Open("input.txt")
+	file, err := os.Open(input)
 	if err != nil {
 		log.Fatalf("failed to open file: %s", err)
 	}

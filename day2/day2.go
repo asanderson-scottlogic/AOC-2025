@@ -1,4 +1,4 @@
-package main
+package day2
 
 import (
 	"fmt"
@@ -13,7 +13,7 @@ type IdRange struct {
 
 const inputString = ""
 
-func main() {
+func MainDay2() {
 	var part1Sum int = 0
 	var part2Sum int = 0
 	var idRanges []IdRange

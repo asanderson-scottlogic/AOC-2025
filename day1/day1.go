@@ -1,4 +1,4 @@
-package main
+package day1
 
 import (
 	"bufio"
@@ -18,12 +18,12 @@ const right = "R"
 var part1total = 0
 var part2total = 0
 
-func main() {
+func MainDay1(input string) {
 	dial := Dial{50}
 	part1total = 0
 	part2total = 0
 
-	file, err := os.Open("input.txt")
+	file, err := os.Open(input)
 	if err != nil {
 		log.Fatalf("failed to open file: %s", err)
 	}
