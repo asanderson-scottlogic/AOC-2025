@@ -19,25 +19,7 @@ func MainDay6(filename string) {
 	lastRow := len(lines) - 1
 	operationString := lines[lastRow]
 
-	var calculations []calculation
-	for i := 0; i < len(operationString); i++ {
-		currentChar := string(operationString[i])
-		lenCounter := 1
-		operation := currentChar
-
-		for j := i + 1; j < len(operationString); j++ {
-			nextChar := string(operationString[j])
-
-			if (nextChar == "*") || (nextChar == "+") {
-				i = j - 1
-				break
-			} else {
-				i++
-				lenCounter++
-			}
-		}
-		calculations = append(calculations, calculation{operation: operation, length: lenCounter})
-	}
+	calculations := getCalculations(operationString)
 
 	part1(calculations, lines, lastRow)
 }
@@ -70,6 +52,28 @@ func part1(calculations []calculation, lines []string, lastRow int) {
 
 func removeWhitespace(input string) string {
 	return strings.ReplaceAll(input, " ", "")
+}
+
+func getCalculations(operationString string) (calculations []calculation) {
+	for i := 0; i < len(operationString); i++ {
+		currentChar := string(operationString[i])
+		lenCounter := 1
+		operation := currentChar
+
+		for j := i + 1; j < len(operationString); j++ {
+			nextChar := string(operationString[j])
+
+			if (nextChar == "*") || (nextChar == "+") {
+				i = j - 1
+				break
+			} else {
+				i++
+				lenCounter++
+			}
+		}
+		calculations = append(calculations, calculation{operation: operation, length: lenCounter})
+	}
+	return
 }
 
 func readFile(filename string) []string {
