@@ -18,18 +18,16 @@ func MainDay6(filename string) {
 	lines := readFile(filename)
 	lastRow := len(lines) - 1
 	operationString := lines[lastRow]
-
 	calculations := getCalculations(operationString)
 
-	part1(calculations, lines, lastRow)
-	part2(calculations, lines, lastRow)
+	fmt.Printf("Part 1 total is: %v\n", part1(calculations, lines, lastRow))
+	fmt.Printf("Part 2 total is: %v", part2(calculations, lines, lastRow))
 }
 
-func part2(calculations []calculation, lines []string, lastRow int) {
+func part2(calculations []calculation, lines []string, lastRow int) (runningTotal int) {
 	p := 0
 	var numbers []string
 
-	runningTotal := 0
 	for _, calc := range calculations {
 		numbers = nil
 		for i := p; i < p+calc.length; i++ {
@@ -41,52 +39,47 @@ func part2(calculations []calculation, lines []string, lastRow int) {
 				numbers = append(numbers, fullNum)
 			}
 		}
-		p += calc.length
 
 		calcTotal, _ := strconv.Atoi(numbers[0])
 
-		switch calc.operation {
-		case "*":
-			for i := 1; i < len(numbers); i++ {
-				val, _ := strconv.Atoi(numbers[i])
+		for i := 1; i < len(numbers); i++ {
+			val, _ := strconv.Atoi(numbers[i])
+			switch calc.operation {
+			case "*":
 				calcTotal *= val
-			}
-			runningTotal += calcTotal
-		case "+":
-			for i := 1; i < len(numbers); i++ {
-				val, _ := strconv.Atoi(numbers[i])
+			case "+":
 				calcTotal += val
 			}
-			runningTotal += calcTotal
 		}
+
+		runningTotal += calcTotal
+		p += calc.length
 	}
 
-	fmt.Printf("Part 2 total is: %v", runningTotal)
+	return
 }
 
-func part1(calculations []calculation, lines []string, lastRow int) {
+func part1(calculations []calculation, lines []string, lastRow int) (runningTotal int) {
 	p := 0
-	runningTotal := 0
+
 	for _, calc := range calculations {
 		calcTotal, _ := strconv.Atoi(removeWhitespace(lines[0][p : p+calc.length]))
 
-		switch calc.operation {
-		case "*":
-			for i := 1; i < lastRow; i++ {
-				val, _ := strconv.Atoi(removeWhitespace(lines[i][p : p+calc.length]))
+		for i := 1; i < lastRow; i++ {
+			val, _ := strconv.Atoi(removeWhitespace(lines[i][p : p+calc.length]))
+			switch calc.operation {
+			case "*":
 				calcTotal *= val
-			}
-			runningTotal += calcTotal
-		case "+":
-			for i := 1; i < lastRow; i++ {
-				val, _ := strconv.Atoi(removeWhitespace(lines[i][p : p+calc.length]))
+			case "+":
 				calcTotal += val
 			}
-			runningTotal += calcTotal
 		}
+
+		runningTotal += calcTotal
 		p += calc.length
 	}
-	fmt.Printf("Part 1 total is: %v\n", runningTotal)
+
+	return
 }
 
 func removeWhitespace(input string) string {
